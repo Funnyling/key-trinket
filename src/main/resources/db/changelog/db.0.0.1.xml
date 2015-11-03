@@ -8,9 +8,6 @@
 
 
     <changeSet author="ntishkevich" id="20151103-02" runAlways="true" runOnChange="true">
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="1">select count(*) FROM pg_class c WHERE c.relkind = 'S' AND c.relname = 'kt_user_seq_id';</sqlCheck>
-        </preConditions>
         <sql>
             create sequence kt_user_seq_id;
         </sql>

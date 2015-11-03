@@ -1,5 +1,6 @@
 package by.keytrinket;
 
+import by.keytrinket.domain.User;
 import by.keytrinket.service.UserService;
 import by.keytrinket.util.security.UserDetails;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
@@ -60,12 +61,14 @@ public class KeyTrinketApplication {
 
     @Bean
     protected AuditorAware auditorAware() {
-        return () -> {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null || !authentication.isAuthenticated()) {
-                return null;
+        return new AuditorAware<User>() {
+            public User getCurrentAuditor() {
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                if (authentication == null || !authentication.isAuthenticated()) {
+                    return null;
+                }
+                return ((UserDetails) authentication.getPrincipal()).getUser();
             }
-            return ((UserDetails) authentication.getPrincipal()).getUser();
         };
     }
 
