@@ -2,6 +2,7 @@ package by.keytrinket;
 
 import by.keytrinket.service.UserService;
 import by.keytrinket.util.security.UserDetails;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -79,5 +81,11 @@ public class KeyTrinketApplication {
                 http.csrf().disable();
             }
         };
+    }
+
+    @SuppressWarnings({"unchecked"})
+    @Bean
+    protected Jackson2ObjectMapperBuilder configureObjectMapper() {
+        return new Jackson2ObjectMapperBuilder().modulesToInstall(Hibernate5Module.class);
     }
 }

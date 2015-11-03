@@ -11,27 +11,27 @@ import java.util.Objects;
  * @author: ntishkevich
  */
 @Entity
-@Table(name = "kt_user", schema = "keyTrinket")
+@Table(name = "kt_user")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable, KeyTrinketEntity {
 
     @Id
-    @SequenceGenerator(name="KT_USER_SEQ_ID", sequenceName="KT_USER_SEQ_ID", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="KT_USER_SEQ_ID")
-    @Column(unique = true, nullable = false)
+    @SequenceGenerator(name="kt_user_seq_id", sequenceName="kt_user_seq_id", allocationSize = 1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="kt_user_seq_id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 64)
+    @Column(name = "email")
     private String email;
 
-    @Column(nullable = false, unique = true, length = 64)
+    @Column(name = "username")
     private String username;
 
-    @Column(nullable = false, length = 254)
+    @Column(name = "password")
     private String password;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="last_login_date", nullable = false)
+    @Column(name="last_login_date")
     private Date lastLoginDate;
 
     public Long getId() {
