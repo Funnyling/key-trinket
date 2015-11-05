@@ -63,7 +63,8 @@ public class KeyTrinketApplication {
     protected AuditorAware auditorAware() {
         return new AuditorAware<User>() {
             public User getCurrentAuditor() {
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                Authentication authentication = SecurityContextHolder.getContext()
+                        .getAuthentication();
                 if (authentication == null || !authentication.isAuthenticated()) {
                     return null;
                 }
