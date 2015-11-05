@@ -1,6 +1,5 @@
 package by.keytrinket.domain;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +11,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "kt_user")
-@EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable, KeyTrinketEntity {
 
     @Id

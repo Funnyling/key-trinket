@@ -1,13 +1,12 @@
 package by.keytrinket;
 
-import by.keytrinket.domain.User;
 import by.keytrinket.service.UserService;
+import by.keytrinket.util.security.AuthSuccessEventHandler;
 import by.keytrinket.util.security.UserDetails;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.domain.AuditorAware;
@@ -28,7 +27,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication
 @EnableAspectJAutoProxy
 @EnableJpaRepositories(basePackages = "by.keytrinket.repository")
 @EnableTransactionManagement
@@ -43,6 +42,9 @@ public class KeyTrinketApplication {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthSuccessEventHandler authSuccessEventHandler;
+
     public static void main(String[] args) {
         SpringApplication.run(KeyTrinketApplication.class, args);
     }
@@ -56,19 +58,17 @@ public class KeyTrinketApplication {
 
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder(20));
+        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean
     protected AuditorAware auditorAware() {
-        return new AuditorAware<User>() {
-            public User getCurrentAuditor() {
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                if (authentication == null || !authentication.isAuthenticated()) {
-                    return null;
-                }
-                return ((UserDetails) authentication.getPrincipal()).getUser();
+        return () -> {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return null;
             }
+            return ((UserDetails) authentication.getPrincipal()).getUser();
         };
     }
 
@@ -79,7 +79,7 @@ public class KeyTrinketApplication {
             protected void configure(HttpSecurity http) throws Exception {
                 http.exceptionHandling()
                         .and().authorizeRequests().antMatchers("/api/**").authenticated()
-                        .and().formLogin().permitAll();
+                        .and().formLogin().successHandler(authSuccessEventHandler);
                 http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(86400);
                 http.csrf().disable();
             }
