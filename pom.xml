@@ -32,6 +32,9 @@
 		<ehcache.version>2.10.0</ehcache.version>
 		<jackson.version>2.6.3</jackson.version>
 		<hibernate.version>5.0.2.Final</hibernate.version>
+		<liquibase.version>3.4.1</liquibase.version>
+		<liquibase-slf4j.version>1.2.1</liquibase-slf4j.version>
+		<liquibase-hibernate4.version>3.5</liquibase-hibernate4.version>
 		<postgres.version>9.4-1201-jdbc41</postgres.version>
 	</properties>
 
@@ -181,13 +184,6 @@
 			<artifactId>jackson-jr-objects</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.restdocs</groupId>
-			<artifactId>spring-restdocs-mockmvc</artifactId>
-			<version>${spring-rest-docs.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 	
 	<build>
@@ -195,6 +191,40 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>${liquibase.version}</version>
+				<configuration>
+					<changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
+					<diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+					<driver>org.postgresql.Driver</driver>
+					<url>jdbc:postgresql://localhost:5432/</url>
+					<defaultSchemaName></defaultSchemaName>
+					<username>postgres</username>
+					<password>12345</password>
+					<referenceUrl>hibernate:spring:by.keytrinket.domain?dialect=org.hibernate.dialect.PostgreSQL82Dialect</referenceUrl>
+					<verbose>true</verbose>
+					<logging>debug</logging>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.javassist</groupId>
+						<artifactId>javassist</artifactId>
+						<version>3.18.2-GA</version>
+					</dependency>
+					<dependency>
+						<groupId>org.liquibase.ext</groupId>
+						<artifactId>liquibase-hibernate4</artifactId>
+						<version>${liquibase-hibernate4.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-data-jpa</artifactId>
+						<version>${project.parent.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

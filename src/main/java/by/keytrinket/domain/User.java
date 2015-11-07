@@ -18,13 +18,13 @@ public class User extends KeyTrinketEntity implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "email")
+    @Column(name = "email", length = 255, unique = true, nullable = false)
     private String email;
 
-    @Column(name = "username")
+    @Column(name = "username", length = 64, unique = true, nullable = false)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", length = 255, nullable = false)
     private String password;
 
     public Long getId() {
