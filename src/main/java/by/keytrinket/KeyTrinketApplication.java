@@ -1,12 +1,15 @@
 package by.keytrinket;
 
 import by.keytrinket.service.UserService;
+import by.keytrinket.util.security.AuthRestEntyPoint;
 import by.keytrinket.util.security.AuthSuccessEventHandler;
 import by.keytrinket.util.security.UserDetails;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.ehcache.EhCacheFactoryBean;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.domain.AuditorAware;
@@ -21,6 +24,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -56,6 +60,19 @@ public class KeyTrinketApplication {
         return jdbcTokenRepository;
     }
 
+    @Bean
+    protected EhCacheFactoryBean ehCacheFactoryBean() {
+        EhCacheFactoryBean ehCacheFactoryBean = new EhCacheFactoryBean();
+        ehCacheFactoryBean.setCacheManager(ehCacheManagerFactoryBean().getObject());
+        ehCacheFactoryBean.setCacheName("aclCache");
+        return ehCacheFactoryBean;
+    }
+
+    @Bean
+    protected EhCacheManagerFactoryBean ehCacheManagerFactoryBean() {
+        return new EhCacheManagerFactoryBean();
+    }
+
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
@@ -73,15 +90,23 @@ public class KeyTrinketApplication {
     }
 
     @Bean
+    protected AuthenticationEntryPoint authRestEntryPoint() {
+        return new AuthRestEntyPoint();
+    }
+
+    @Bean
     protected WebSecurityConfigurerAdapter webSecurityConfigurerAdapter() {
         return new WebSecurityConfigurerAdapter() {
             @Override
             protected void configure(HttpSecurity http) throws Exception {
-                http.exceptionHandling()
+                http.exceptionHandling().authenticationEntryPoint(authRestEntryPoint())
                         .and().authorizeRequests().antMatchers("/api/**").authenticated()
-                        .and().formLogin().successHandler(authSuccessEventHandler);
+                        .and().formLogin().successHandler(authSuccessEventHandler)
+                        .and().logout().deleteCookies();
                 http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(86400);
-                http.csrf().disable();
+                http.csrf().disable().headers()
+                        .frameOptions()
+                        .sameOrigin();
             }
         };
     }
