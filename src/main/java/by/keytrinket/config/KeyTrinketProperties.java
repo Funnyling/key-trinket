@@ -37,12 +37,12 @@ public class KeyTrinketProperties {
 
     public static class Security {
 
-        private final RememberMe rememberMe = new RememberMe();
+        private final RememberMe rememberme = new RememberMe();
 
         private final Authentication authentication = new Authentication();
 
-        public RememberMe getRememberMe() {
-            return rememberMe;
+        public RememberMe getRememberme() {
+            return rememberme;
         }
 
         public Authentication getAuthentication() {
