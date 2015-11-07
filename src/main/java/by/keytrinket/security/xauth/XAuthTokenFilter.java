@@ -1,4 +1,4 @@
-package by.keytrinket.util.security.xauth;
+package by.keytrinket.security.xauth;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

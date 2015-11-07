@@ -1,7 +1,7 @@
 package by.keytrinket.web;
 
-import by.keytrinket.util.security.CurrentUser;
-import by.keytrinket.util.security.UserDetails;
+import by.keytrinket.security.CurrentUser;
+import by.keytrinket.security.UserDetails;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

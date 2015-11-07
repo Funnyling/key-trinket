@@ -43,12 +43,4 @@
     <changeSet author="ntishkevich" id="1446924509726-5">
         <addPrimaryKey columnNames="series" constraintName="persistent_loginsPK" tableName="persistent_logins"/>
     </changeSet>
-
-    <!--<changeSet id="1446924509726-6" author="ntishkevich">-->
-        <!--<loadData encoding="UTF-8"-->
-                  <!--file="config/liquibase/users.csv"-->
-                  <!--separator=";"-->
-                  <!--tableName="kt_user">-->
-        <!--</loadData>-->
-    <!--</changeSet>-->
 </databaseChangeLog>

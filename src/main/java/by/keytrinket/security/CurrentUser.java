@@ -1,4 +1,4 @@
-package by.keytrinket.util.security;
+package by.keytrinket.security;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

@@ -2,9 +2,9 @@ package by.keytrinket.service.impl;
 
 import by.keytrinket.domain.User;
 import by.keytrinket.repository.UserRepository;
+import by.keytrinket.security.UserDetails;
+import by.keytrinket.security.UserDetailsImpl;
 import by.keytrinket.service.UserService;
-import by.keytrinket.util.security.UserDetails;
-import by.keytrinket.util.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

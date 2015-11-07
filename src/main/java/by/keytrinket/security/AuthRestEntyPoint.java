@@ -1,4 +1,4 @@
-package by.keytrinket.util.security;
+package by.keytrinket.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

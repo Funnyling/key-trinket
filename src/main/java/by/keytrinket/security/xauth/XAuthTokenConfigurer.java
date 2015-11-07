@@ -1,4 +1,4 @@
-package by.keytrinket.util.security.xauth;
+package by.keytrinket.security.xauth;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

@@ -1,10 +1,10 @@
 package by.keytrinket;
 
 import by.keytrinket.config.KeyTrinketProperties;
+import by.keytrinket.security.AuthRestEntyPoint;
+import by.keytrinket.security.AuthSuccessEventHandler;
+import by.keytrinket.security.UserDetails;
 import by.keytrinket.service.UserService;
-import by.keytrinket.util.security.AuthRestEntyPoint;
-import by.keytrinket.util.security.AuthSuccessEventHandler;
-import by.keytrinket.util.security.UserDetails;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

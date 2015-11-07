@@ -1,4 +1,4 @@
-package by.keytrinket.util.security;
+package by.keytrinket.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
