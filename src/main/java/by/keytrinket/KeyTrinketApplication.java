@@ -1,5 +1,6 @@
 package by.keytrinket;
 
+import by.keytrinket.config.KeyTrinketProperties;
 import by.keytrinket.service.UserService;
 import by.keytrinket.util.security.AuthRestEntyPoint;
 import by.keytrinket.util.security.AuthSuccessEventHandler;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +40,7 @@ import javax.sql.DataSource;
 @EnableJpaAuditing
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableConfigurationProperties(KeyTrinketProperties.class)
 public class KeyTrinketApplication {
 
     @Autowired
@@ -45,9 +48,6 @@ public class KeyTrinketApplication {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private AuthSuccessEventHandler authSuccessEventHandler;
 
     public static void main(String[] args) {
         SpringApplication.run(KeyTrinketApplication.class, args);
@@ -95,14 +95,19 @@ public class KeyTrinketApplication {
     }
 
     @Bean
+    protected AuthSuccessEventHandler authSuccessEventHandler() {
+        return new AuthSuccessEventHandler();
+    }
+
+    @Bean
     protected WebSecurityConfigurerAdapter webSecurityConfigurerAdapter() {
         return new WebSecurityConfigurerAdapter() {
             @Override
             protected void configure(HttpSecurity http) throws Exception {
                 http.exceptionHandling().authenticationEntryPoint(authRestEntryPoint())
                         .and().authorizeRequests().antMatchers("/api/**").authenticated()
-                        .and().formLogin().successHandler(authSuccessEventHandler)
-                        .and().logout().deleteCookies();
+                        .and().formLogin().successHandler(authSuccessEventHandler())
+                        .and().logout().deleteCookies("jsessionid");
                 http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(86400);
                 http.csrf().disable().headers()
                         .frameOptions()
