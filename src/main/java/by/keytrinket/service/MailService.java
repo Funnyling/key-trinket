@@ -1,7 +1,7 @@
 package by.keytrinket.service;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 public interface MailService {
 }

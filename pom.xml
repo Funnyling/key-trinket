@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>key-trinket</name>
-	<description></description>
+	<description>Test application</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

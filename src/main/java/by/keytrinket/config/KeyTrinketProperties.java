@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 @ConfigurationProperties(prefix = "keytrinket", ignoreUnknownFields = false)
 public class KeyTrinketProperties {

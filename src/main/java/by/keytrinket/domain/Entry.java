@@ -1,7 +1,7 @@
 package by.keytrinket.domain;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 public class Entry {
 }

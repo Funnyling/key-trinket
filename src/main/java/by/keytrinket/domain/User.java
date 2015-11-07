@@ -3,15 +3,14 @@ package by.keytrinket.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 @Entity
 @Table(name = "kt_user")
-public class User implements Serializable, KeyTrinketEntity {
+public class User extends KeyTrinketEntity implements Serializable {
 
     @Id
     @SequenceGenerator(name="kt_user_seq_id", sequenceName="kt_user_seq_id", allocationSize = 1)
@@ -27,10 +26,6 @@ public class User implements Serializable, KeyTrinketEntity {
 
     @Column(name = "password")
     private String password;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="last_login_date")
-    private Date lastLoginDate;
 
     public Long getId() {
         return id;
@@ -64,14 +59,6 @@ public class User implements Serializable, KeyTrinketEntity {
         this.password = password;
     }
 
-    public Date getLastLoginDate() {
-        return lastLoginDate;
-    }
-
-    public void setLastLoginDate(Date lastLoginDate) {
-        this.lastLoginDate = lastLoginDate;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,11 +68,11 @@ public class User implements Serializable, KeyTrinketEntity {
                 Objects.equals(getEmail(), user.getEmail()) &&
                 Objects.equals(getUsername(), user.getUsername()) &&
                 Objects.equals(getPassword(), user.getPassword()) &&
-                Objects.equals(getLastLoginDate(), user.getLastLoginDate());
+                Objects.equals(getLastEventDate(), user.getLastEventDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getUsername(), getPassword(), getLastLoginDate());
+        return Objects.hash(getId(), getEmail(), getUsername(), getPassword(), getLastEventDate());
     }
 }

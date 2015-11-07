@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 public class XAuthTokenFilter extends GenericFilterBean {
 

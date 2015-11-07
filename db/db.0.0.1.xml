@@ -20,7 +20,7 @@
 				username varchar(64) not null unique,
 				email varchar(64) not null unique,
 				password varchar(254) not null,
-				last_login_date timestamp without time zone
+				last_event_date timestamp without time zone
             )
         </sql>
     </changeSet>

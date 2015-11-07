@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 public class UserDetailsImpl implements UserDetails {
 

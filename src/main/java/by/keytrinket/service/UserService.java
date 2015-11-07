@@ -5,7 +5,7 @@ import org.springframework.security.authentication.event.AuthenticationSuccessEv
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 public interface UserService extends UserDetailsService, ApplicationListener<AuthenticationSuccessEvent> {
 }

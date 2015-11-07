@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public void onApplicationEvent(AuthenticationSuccessEvent authenticationSuccessEvent) {
         User user = ((UserDetails) authenticationSuccessEvent.getAuthentication().getPrincipal()).getUser();
         Date lastLoginDate = new Date();
-        user.setLastLoginDate(lastLoginDate);
+        user.setLastEventDate(lastLoginDate);
         userRepository.save(user);
     }
 }

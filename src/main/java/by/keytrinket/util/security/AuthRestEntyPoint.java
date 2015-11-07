@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 public class AuthRestEntyPoint implements AuthenticationEntryPoint {
     private final Logger log = LoggerFactory.getLogger(AuthRestEntyPoint.class);

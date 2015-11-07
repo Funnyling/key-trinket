@@ -33,6 +33,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
+/**
+ * @author ntishkevich
+ */
 @SpringBootApplication
 @EnableAspectJAutoProxy
 @EnableJpaRepositories(basePackages = "by.keytrinket.repository")

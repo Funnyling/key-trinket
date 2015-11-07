@@ -1,7 +1,7 @@
 package by.keytrinket.util.security.xauth;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 public class Token {
 

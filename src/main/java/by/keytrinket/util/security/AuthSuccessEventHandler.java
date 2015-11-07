@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author: ntishkevich
+ * @author ntishkevich
  */
 @Component
 public class AuthSuccessEventHandler extends SimpleUrlAuthenticationSuccessHandler {
