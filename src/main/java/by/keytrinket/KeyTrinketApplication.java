@@ -134,7 +134,7 @@ public class KeyTrinketApplication {
     @Description("Thymeleaf template resolver serving HTML 5 emails")
     public ClassLoaderTemplateResolver emailTemplateResolver() {
         ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
-        emailTemplateResolver.setPrefix("mails/");
+        emailTemplateResolver.setPrefix("templates/mails/");
         emailTemplateResolver.setSuffix(".html");
         emailTemplateResolver.setTemplateMode("HTML5");
         emailTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
@@ -146,7 +146,7 @@ public class KeyTrinketApplication {
     @Description("Spring mail message resolver")
     public MessageSource emailMessageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:/mails/messages/messages");
+        messageSource.setBasename("classpath:/templates/mails/messages/messages");
         messageSource.setDefaultEncoding(CharEncoding.UTF_8);
         return messageSource;
     }
