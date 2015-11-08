@@ -120,6 +120,7 @@ dwsync.xml
 
 target/
 node_modules/
+webapp/vendor/
 rebel.xml
 
 data/
