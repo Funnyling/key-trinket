@@ -6,14 +6,18 @@ import by.keytrinket.security.AuthSuccessEventHandler;
 import by.keytrinket.security.UserDetails;
 import by.keytrinket.service.UserService;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import org.apache.commons.lang.CharEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -30,6 +34,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import javax.sql.DataSource;
 
@@ -123,5 +128,26 @@ public class KeyTrinketApplication {
     @Bean
     protected Jackson2ObjectMapperBuilder configureObjectMapper() {
         return new Jackson2ObjectMapperBuilder().modulesToInstall(Hibernate5Module.class);
+    }
+
+    @Bean
+    @Description("Thymeleaf template resolver serving HTML 5 emails")
+    public ClassLoaderTemplateResolver emailTemplateResolver() {
+        ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
+        emailTemplateResolver.setPrefix("mails/");
+        emailTemplateResolver.setSuffix(".html");
+        emailTemplateResolver.setTemplateMode("HTML5");
+        emailTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
+        emailTemplateResolver.setOrder(1);
+        return emailTemplateResolver;
+    }
+
+    @Bean
+    @Description("Spring mail message resolver")
+    public MessageSource emailMessageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:/mails/messages/messages");
+        messageSource.setDefaultEncoding(CharEncoding.UTF_8);
+        return messageSource;
     }
 }
