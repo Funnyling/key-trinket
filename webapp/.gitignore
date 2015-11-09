@@ -119,6 +119,8 @@ _notes
 dwsync.xml
 
 target/
+node_modules/
+vendor/
 rebel.xml
 
 data/
