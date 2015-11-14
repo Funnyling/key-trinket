@@ -1,6 +1,8 @@
 {
-  "name": "key-trinket",
+  "name": "keytrinket",
   "version": "0.0.0",
+  "appPath": "src/main/webapp",
+  "testPath": "src/test/javascript/spec",
   "dependencies": {
     "angular": "1.4.5",
     "angular-aria": "1.4.5",
@@ -31,6 +33,9 @@
       ]
     }
   },
-  "appPath": "/webapp",
-  "moduleName": "keyTrinket"
+  "resolutions": {
+    "angular": "1.4.5",
+    "angular-cookies": "1.4.5",
+    "jquery": "2.1.4"
+  }
 }
