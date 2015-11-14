@@ -111,6 +111,7 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 'src/main/webapp/scripts/app/app.js',
+                'src/main/webapp/scripts/app.js',
                 'src/main/webapp/scripts/app/**/*.js',
                 'src/main/webapp/scripts/components/**/*.js'
             ]
@@ -192,7 +193,7 @@ module.exports = function (grunt) {
                 dest: '.tmp/templates/templates.js',
                 options: {
                     module: 'keytrinket',
-                    usemin: 'src/main/webapp/scripts/app/app.js',
+                    usemin: 'src/main/webapp/scripts/app.js',
                     htmlmin: '<%= htmlmin.dist.options %>'
                 }
             }
