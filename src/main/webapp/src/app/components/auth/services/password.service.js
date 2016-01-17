@@ -4,13 +4,13 @@ angular.module('keytrinket')
         });
     });
 
-angular.module('hipsterApp')
+angular.module('keytrinket')
     .factory('PasswordResetInit', function ($resource) {
         return $resource('api/account/reset_password/init', {}, {
         });
     });
 
-angular.module('hipsterApp')
+angular.module('keytrinket')
     .factory('PasswordResetFinish', function ($resource) {
         return $resource('api/account/reset_password/finish', {}, {
         });
