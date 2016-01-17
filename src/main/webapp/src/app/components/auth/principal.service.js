@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('keytrinket')
     .factory('Principal', function Principal($q, Account) {
         var _identity,

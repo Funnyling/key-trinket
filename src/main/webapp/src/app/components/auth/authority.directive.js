@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('keytrinket')
     .directive('hasAnyAuthority', ['Principal', function (Principal) {
         return {

@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('keytrinket')
     .factory('Auth', function Auth($rootScope, $state, $q, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish) {
         return {

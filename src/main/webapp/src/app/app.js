@@ -1,6 +1,4 @@
-'use strict';
-
-angular.module('keytrinket', [])
+angular.module('keytrinket', ['keytrinket-templates'])
 
     .run(function () {
         //$rootScope.ENV = ENV;

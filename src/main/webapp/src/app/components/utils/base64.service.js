@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('keytrinket')
     .service('Base64', function () {
         var keyStr = 'ABCDEFGHIJKLMNOP' +

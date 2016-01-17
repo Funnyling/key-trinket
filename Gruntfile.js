@@ -1,4 +1,3 @@
-// Generated on 2015-11-14 using generator-jhipster 2.23.0
 'use strict';
 var fs = require('fs');
 
@@ -13,365 +12,81 @@ var parseVersionFromPomXml = function() {
     return version;
 };
 
-// usemin custom step
-var useminAutoprefixer = {
-    name: 'autoprefixer',
-    createConfig: function(context, block) {
-        if(block.src.length === 0) {
-            return {};
-        } else {
-            return require('grunt-usemin/lib/config/cssmin').createConfig(context, block); // Reuse cssmins createConfig
-        }
-    }
-};
-
 module.exports = function (grunt) {
-    require('load-grunt-tasks')(grunt);
-    require('time-grunt')(grunt);
 
     grunt.initConfig({
-        yeoman: {
-            // configurable paths
-            app: require('./bower.json').appPath || 'src/main/webapp',
-            dist: 'src/main/webapp/dist'
-        },
-        watch: {
-            bower: {
-                files: ['bower.json'],
-                tasks: ['wiredep']
-            },
-            ngconstant: {
-                files: ['Gruntfile.js', 'pom.xml'],
-                tasks: ['ngconstant:dev']
-            }
-        },
-        autoprefixer: {
-            // src and dest is configured in a subtask called "generated" by usemin
-        },
-        wiredep: {
-            app: {
-                src: ['src/main/webapp/index.html'],
-                exclude: [
-                    /angular-i18n/  // localizations are loaded dynamically
-                ]
-            },
-            test: {
-                src: 'src/test/javascript/karma.conf.js',
-                exclude: [/angular-i18n/, /angular-scenario/],
-                ignorePath: /\.\.\/\.\.\//, // remove ../../ from paths of injected javascripts
-                devDependencies: true,
-                fileTypes: {
-                    js: {
-                        block: /(([\s\t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
-                        detect: {
-                            js: /'(.*\.js)'/gi
-                        },
-                        replace: {
-                            js: '\'{{filePath}}\','
-                        }
-                    }
+        pkg: grunt.file.readJSON('package.json'),
+        bower_concat: {
+            all: {
+                dest: 'src/main/webapp/build/bower.js',
+                cssDest: 'src/main/webapp/build/bower.css',
+                mainFiles: {
+                    'bootstrap': ['dist/css/bootstrap.css']
                 }
             }
         },
-        browserSync: {
-            dev: {
-                bsFiles: {
-                    src : [
-                        'src/main/webapp/**/*.html',
-                        'src/main/webapp/**/*.json',
-                        'src/main/webapp/assets/styles/**/*.css',
-                        'src/main/webapp/scripts/**/*.{js,html}',
-                        'src/main/webapp/assets/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
-                        'tmp/**/*.{css,js}'
-                    ]
-                }
+        concat: {
+            js: {
+                options: {
+                    separator: ';\n'
+                },
+                src: ['src/main/webapp/build/*.js', 'src/main/webapp/src/app/*.js', 'src/main/webapp/src/app/**/*.js'],
+                dest: 'src/main/webapp/dist/app.js'
             },
+            css: {
+                options: {
+                    separator: '\n'
+                },
+                src: ['src/main/webapp/build/*.css', 'src/main/webapp/src/assets/css/*.css'],
+                dest: 'src/main/webapp/dist/css/styles.css'
+            }
+        },
+        copy: {
+            dist: {
+                files: [{
+                    // Bootstrap fonts
+                    expand: true,
+                    cwd: 'bower_components/bootstrap/dist',
+                    src: 'fonts/*',
+                    dest: 'src/main/webapp/dist/'
+                }]
+            }
+        },
+        jshint: {
+            all: ['src/w/*.js', 'src/main/webapp/src/app/**/*.js']
+        },
+        html2js: {
             options: {
-                watchTask: true,
-                proxy: "localhost:8080"
+                base: "src/main/webapp",
+                module: "keytrinket-templates"
+            },
+            dist: {
+                src: [ 'src/main/webapp/src/app/**/*.html' ],
+                dest: 'src/main/webapp/build/templates.js'
             }
         },
         clean: {
-            dist: {
-                files: [{
-                    dot: true,
-                    src: [
-                        '.tmp',
-                        '<%= yeoman.dist %>/*',
-                        '!<%= yeoman.dist %>/.git*'
-                    ]
-                }]
-            },
-            server: '.tmp'
-        },
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc'
-            },
-            all: [
-                'Gruntfile.js',
-                'src/main/webapp/scripts/app/app.js',
-                'src/main/webapp/scripts/app.js',
-                'src/main/webapp/scripts/app/**/*.js',
-                'src/main/webapp/scripts/components/**/*.js'
-            ]
-        },
-        concat: {
-            // src and dest is configured in a subtask called "generated" by usemin
-        },
-        uglifyjs: {
-            // src and dest is configured in a subtask called "generated" by usemin
-        },
-        rev: {
-            dist: {
-                files: {
-                    src: [
-                        '<%= yeoman.dist %>/scripts/**/*.js',
-                        '<%= yeoman.dist %>/assets/styles/**/*.css',
-                        '<%= yeoman.dist %>/assets/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
-                        '<%= yeoman.dist %>/assets/fonts/*'
-                    ]
-                }
-            }
-        },
-        useminPrepare: {
-            html: 'src/main/webapp/**/*.html',
-            options: {
-                dest: '<%= yeoman.dist %>',
-                flow: {
-                    html: {
-                        steps: {
-                            js: ['concat', 'uglifyjs'],
-                            css: ['cssmin', useminAutoprefixer] // Let cssmin concat files so it corrects relative paths to fonts and images
-                        },
-                            post: {}
-                        }
-                    }
-            }
-        },
-        usemin: {
-            html: ['<%= yeoman.dist %>/**/*.html'],
-            css: ['<%= yeoman.dist %>/assets/styles/**/*.css'],
-            js: ['<%= yeoman.dist %>/scripts/**/*.js'],
-            options: {
-                assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/assets/styles', '<%= yeoman.dist %>/assets/images', '<%= yeoman.dist %>/assets/fonts'],
-                patterns: {
-                    js: [
-                        [/(assets\/images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm, 'Update the JS to reference our revved images']
-                    ]
-                },
-                dirs: ['<%= yeoman.dist %>']
-            }
-        },
-        imagemin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'src/main/webapp/assets/images',
-                    src: '**/*.{jpg,jpeg}', // we don't optimize PNG files as it doesn't work on Linux. If you are not on Linux, feel free to use '**/*.{png,jpg,jpeg}'
-                    dest: '<%= yeoman.dist %>/assets/images'
-                }]
-            }
-        },
-        svgmin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'src/main/webapp/assets/images',
-                    src: '**/*.svg',
-                    dest: '<%= yeoman.dist %>/assets/images'
-                }]
-            }
-        },
-        cssmin: {
-            // src and dest is configured in a subtask called "generated" by usemin
-        },
-        ngtemplates:    {
-            dist: {
-                cwd: 'src/main/webapp',
-                src: ['scripts/app/**/*.html', 'scripts/components/**/*.html'],
-                dest: '.tmp/templates/templates.js',
-                options: {
-                    module: 'keytrinket',
-                    usemin: 'src/main/webapp/scripts/app.js',
-                    htmlmin: '<%= htmlmin.dist.options %>'
-                }
-            }
-        },
-        htmlmin: {
-            dist: {
-                options: {
-                    removeCommentsFromCDATA: true,
-                    // https://github.com/yeoman/grunt-usemin/issues/44
-                    collapseWhitespace: true,
-                    collapseBooleanAttributes: true,
-                    conservativeCollapse: true,
-                    removeAttributeQuotes: true,
-                    removeRedundantAttributes: true,
-                    useShortDoctype: true,
-                    removeEmptyAttributes: true,
-                    keepClosingSlash: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.dist %>',
-                    src: ['*.html'],
-                    dest: '<%= yeoman.dist %>'
-                }]
-            }
-        },
-        // Put files not handled in other tasks here
-        copy: {
-            fonts: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    flatten: true,
-                    cwd: 'src/main/webapp',
-                    dest: '<%= yeoman.dist %>/assets/fonts',
-                    src: [
-                      'bower_components/bootstrap/fonts/*.*'
-                    ]
-                }]
-            },
-            dist: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: 'src/main/webapp',
-                    dest: '<%= yeoman.dist %>',
-                    src: [
-                        '*.html',
-                        'scripts/**/*.html',
-                        'assets/images/**/*.{png,gif,webp,jpg,jpeg,svg}',
-                        'assets/fonts/*'
-                    ]
-                }, {
-                    expand: true,
-                    cwd: '.tmp/assets/images',
-                    dest: '<%= yeoman.dist %>/assets/images',
-                    src: [
-                        'generated/*'
-                    ]
-                }]
-            },
-            generateOpenshiftDirectory: {
-                    expand: true,
-                    dest: 'deploy/openshift',
-                    src: [
-                        'pom.xml',
-                        'src/main/**'
-                ]
-            }
-        },
-        karma: {
-            unit: {
-                configFile: 'src/test/javascript/karma.conf.js',
-                singleRun: true
-            }
-        },
-        ngAnnotate: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '.tmp/concat/scripts',
-                    src: '*.js',
-                    dest: '.tmp/concat/scripts'
-                }]
-            }
-        },
-        buildcontrol: {
-            options: {
-                commit: true,
-                push: false,
-                connectCommits: false,
-                message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
-            },
-            openshift: {
-                options: {
-                    dir: 'deploy/openshift',
-                    remote: 'openshift',
-                    branch: 'master'
-                }
-            }
-        },
-        ngconstant: {
-            options: {
-                name: 'keytrinket',
-                deps: false,
-                wrap: '"use strict";\n// DO NOT EDIT THIS FILE, EDIT THE GRUNT TASK NGCONSTANT SETTINGS INSTEAD WHICH GENERATES THIS FILE\n{%= __ngModule %}'
-            },
-            dev: {
-                options: {
-                    dest: 'src/main/webapp/scripts/app/app.constants.js'
-                },
-                constants: {
-                    ENV: 'dev',
-                    VERSION: parseVersionFromPomXml()
-                }
-            },
-            prod: {
-                options: {
-                    dest: '.tmp/scripts/app/app.constants.js'
-                },
-                constants: {
-                    ENV: 'prod',
-                    VERSION: parseVersionFromPomXml()
-                }
+            temp: {
+                src: [ 'src/main/webapp/build' ]
             }
         }
     });
 
-    grunt.registerTask('serve', [
-        'clean:server',
-        'wiredep',
-        'ngconstant:dev',
-        'browserSync',
-        'watch'
-    ]);
+    grunt.loadNpmTasks('grunt-bower-concat');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-html2js');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
-    grunt.registerTask('server', function (target) {
-        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-        grunt.task.run([target ? ('serve:' + target) : 'serve']);
-    });
-
-    grunt.registerTask('test', [
-        'clean:server',
-        'wiredep:test',
-        'ngconstant:dev',
-        'karma'
-    ]);
-
-    grunt.registerTask('build', [
-        'clean:dist',
-        'wiredep:app',
-        'ngconstant:prod',
-        'useminPrepare',
-        'ngtemplates',
-        'imagemin',
-        'svgmin',
+    grunt.registerTask('dev', [
+        'jshint',
+        'bower_concat',
+        'html2js',
         'concat',
-        'copy:fonts',
-        'copy:dist',
-        'ngAnnotate',
-        'uglify',
-        'rev',
-        'usemin',
-        'htmlmin'
+        'copy',
+        'clean'
     ]);
 
-    grunt.registerTask('buildOpenshift', [
-        'test',
-        'build',
-        'copy:generateOpenshiftDirectory'
-    ]);
-
-    grunt.registerTask('deployOpenshift', [
-        'test',
-        'build',
-        'copy:generateOpenshiftDirectory',
-        'buildcontrol:openshift'
-    ]);
-
-    grunt.registerTask('default', ['serve']);
+    grunt.registerTask('default', ['dev']);
 };

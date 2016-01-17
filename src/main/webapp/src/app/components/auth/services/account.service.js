@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('keytrinket')
     .factory('Account', function Account($resource) {
         return $resource('api/account', {}, {
