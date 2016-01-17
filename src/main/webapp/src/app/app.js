@@ -1,9 +1,7 @@
 angular.module('keytrinket', ['keytrinket-templates'])
 
     .run(function () {
-        //$rootScope.ENV = ENV;
-        //$rootScope.VERSION = VERSION;
-        /*$rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
+        $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
             $rootScope.toState = toState;
             $rootScope.toStateParams = toStateParams;
 
@@ -11,10 +9,10 @@ angular.module('keytrinket', ['keytrinket-templates'])
                 Auth.authorize();
             }
 
-        });*/
+        });
 
-        /*$rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
-            var titleKey = 'hipster' ;
+        $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
+            var titleKey = 'keytrinket' ;
 
             // Remember previous state unless we've been redirected to login or we've just
             // reset the state memory after logout. If we're redirected to login, our
@@ -39,7 +37,7 @@ angular.module('keytrinket', ['keytrinket-templates'])
             } else {
                 $state.go($rootScope.previousStateName, $rootScope.previousStateParams);
             }
-        };*/
+        };
     })
     .config(function () {
 
@@ -51,7 +49,7 @@ angular.module('keytrinket', ['keytrinket-templates'])
             'abstract': true,
             views: {
                 'navbar@': {
-                    templateUrl: 'scripts/components/navbar/navbar.html',
+                    templateUrl: 'components/components/navbar/navbar.html',
                     controller: 'NavbarController'
                 }
             },
@@ -71,12 +69,12 @@ angular.module('keytrinket', ['keytrinket-templates'])
 
     })
     .config(function() {
-        /*$urlMatcherFactory.type('boolean', {
+        $urlMatcherFactory.type('boolean', {
             name : 'boolean',
             decode: function(val) { return val == true ? true : val == "true" ? true : false },
             encode: function(val) { return val ? 1 : 0; },
             equals: function(a, b) { return this.is(a) && a === b; },
             is: function(val) { return [true,false,0,1].indexOf(val) >= 0 },
             pattern: /bool|true|0|1/
-        });*/
+        });
     });
